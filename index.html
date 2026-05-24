@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <header class="cabecera-principal">
+    <header class="cabecera-principal">
         <div class="contenedor-navegacion">
             
             <div class="bloque-marca" onclick="filtrarPorCodigo('todos');" style="cursor: pointer;" title="Ver todo el catálogo">
@@ -20,6 +20,7 @@
             <nav class="menu-horizontal">
                 <button class="menu-hamburguesa" id="btn-menu">☰ Menú</button>
                 <ul id="lista-menu">
+                    
                     <li class="desplegable">
                         <a href="#">Nuestros Productos ▾</a>
                         <ul class="submenu">
@@ -46,12 +47,12 @@
 
         </div>
     </header>
+
     <section class="banner-bienvenida">
         <div class="filtro-oscuro">
             <div class="texto-banner">
                 <h2>Bienvenidos a Mercado El Patio</h2>
                 <p>Tradición y calidad en cada producto que elegimos para vos.</p>
-                <a href="#catalogo" class="btn-ir">Ver Catálogo</a>
             </div>
         </div>
     </section>
@@ -64,7 +65,6 @@
         </div>
     </main>
 
-    <!-- MODAL CARRITO -->
     <div id="modal-carrito" class="modal-compra">
         <div class="caja-carrito">
             <span class="close-btn" onclick="alternarModalCarrito()">×</span>
@@ -84,8 +84,7 @@
     </div>
 
     <footer class="pie-pagina">
-        <p style="color: #ccc; font-size: 14px; margin-bottom: 10px;">© 2025 Mercado El Patio. Todos los derechos reservados.</p>
-        <span class="link-admin-frase">Gestión Interna</span>
+        <p style="color: #ccc; font-size: 14px; margin-bottom: 10px;">© Mercado El Patio. Todos los derechos reservados.</p>
     </footer>
 
     <script src="script.js"></script>
