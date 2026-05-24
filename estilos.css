@@ -629,3 +629,17 @@ body {
         margin: 20px 15px;
     }
 }
+/* =========================================================
+   ÍCONO DE WHATSAPP PREMIUM EN CABECERA
+   ========================================================= */
+.icono-wsapp {
+    font-size: 28px;         /* Tamaño grande, legible y fácil de tocar */
+    color: #25D366;          /* El color verde oficial de WhatsApp */
+    transition: all 0.3s ease;
+    vertical-align: middle;
+}
+
+.icono-wsapp:hover {
+    color: #128C7E;          /* Se vuelve un verde más oscuro al pasar el mouse */
+    transform: scale(1.15);  /* Hace un pequeño efecto de aumento muy pro */
+}
