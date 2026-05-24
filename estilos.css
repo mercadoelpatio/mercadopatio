@@ -189,19 +189,19 @@ body {
 .banner-bienvenida {
     background-image: url('Patio1.jpg');
     background-size: cover;
-    background-position: center center; /* Mantiene la foto centrada */
+    background-position: center center;
     width: 100%;
 }
 
 .filtro-oscuro {
     background-color: rgba(0,0,0,0.55);
-    /* AUMENTAMOS LA ALTURA ACÁ (Antes era 80px, ahora es 160px) */
-    padding: 160px 20px; 
+    /* Forzamos una altura mucho mayor para que se vea la foto */
+    min-height: 450px; 
+    padding: 60px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .texto-banner {
     max-width: 750px;
     text-align: center;
