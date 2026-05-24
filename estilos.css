@@ -33,7 +33,6 @@ body {
     padding: 10px 20px;
 }
 
-/* Identidad de la marca */
 .bloque-marca {
     display: flex;
     align-items: center;
@@ -54,7 +53,6 @@ body {
     white-space: nowrap;
 }
 
-/* Menú Horizontal Integrado al lado de la marca */
 .menu-horizontal {
     flex-grow: 1;
     margin-left: 40px;
@@ -88,7 +86,6 @@ body {
     background-color: #f7f5f2;
 }
 
-/* Submenús desplegables del menú horizontal */
 .submenu {
     display: none;
     position: absolute;
@@ -119,7 +116,6 @@ body {
     display: block;
 }
 
-/* Bloque derecho: Contacto y Carrito */
 .bloque-contacto {
     display: flex;
     align-items: center;
@@ -228,7 +224,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* Ajuste de ancho mínimo a 230px para empaquetar 3 productos por fila */
+/* Distribución Pro a 3 Columnas */
 .rejilla-productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -242,6 +238,7 @@ body {
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .img-box { 
@@ -269,24 +266,39 @@ body {
     transform: scale(1.05); 
 }
 
-.detalles-item { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-.detalles-item h3 { font-size: 16px; margin-bottom: 8px; text-align: center; } 
-.detalles-item p { font-size: 13px; color: #666; margin-bottom: 15px; flex-grow: 1; text-align: center; }
+.detalles-item { 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+}
 
-/* =========================================================
-   CORRECCIÓN FINAL: PRECIO Y BOTÓN CENTRADOS CON ESTÉTICA PREMIUM
-   ========================================================= */
+.detalles-item h3 { 
+    font-size: 16px; 
+    margin-bottom: 8px; 
+    text-align: center; 
+} 
+
+.detalles-item p { 
+    font-size: 13px; 
+    color: #666; 
+    margin-bottom: 15px; 
+    flex-grow: 1; 
+    text-align: center; 
+}
+
+/* Estructura vertical perfecta para el Precio y Botón */
 .compra-box { 
     display: flex; 
-    flex-direction: column; /* Apila precio y botón */
-    align-items: center;    /* Los centra en el medio de la tarjeta */
-    gap: 10px;              /* Espacio muy chiquito y prolijo entre ellos */
+    flex-direction: column; 
+    align-items: center;    
+    gap: 10px;              
     margin-top: auto; 
-    padding-top: 10px;      /* Lo despega un poco del texto de arriba */
+    padding-top: 10px;      
 }
 
 .costo { 
-    font-size: 21px;        /* Tamaño destacado pero armónico */
+    font-size: 21px;        
     font-weight: bold; 
     color: #bc5a26; 
     margin: 0;
@@ -297,22 +309,22 @@ body {
     background: #222; 
     color: white; 
     border: none; 
-    padding: 10px 28px;     /* Ancho controlado, NO estirado al 100% */
+    padding: 10px 28px;     
     cursor: pointer; 
-    border-radius: 25px;    /* Forma de píldora redondeada súper elegante */
+    border-radius: 25px;    
     font-weight: bold; 
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Le da un poco de volumen al botón */
-    width: auto;            /* Asegura que no rompa la tarjeta */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    width: auto;            
 }
 
 .add-cart:hover { 
     background: #bc5a26; 
-    transform: translateY(-2px); /* Se levanta apenas al pasar el mouse */
-    box-shadow: 0 6px 15px rgba(188, 90, 38, 0.3); /* Sombra naranja al acercar el mouse */
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 15px rgba(188, 90, 38, 0.3); 
 }
 
 /* CONTROL DE STOCK */
