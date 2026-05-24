@@ -1,122 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mercado El Patio - Casa de Campo</title>
-    <link rel="stylesheet" href="estilos.css">
-</head>
-<body>
-
-<header class="cabecera-principal">
-    <div class="contenedor-navegacion">
+<nav class="menu-horizontal">
+    <button class="menu-hamburguesa" id="btn-menu">☰ Menú</button>
+    <ul id="lista-menu">
+        <li><a href="#" onclick="filtrarPorCodigo('todos')">Inicio / Todo</a></li>
         
-        <div class="bloque-marca">
-            <img src="Logo.jfif" alt="Logo Mercado El Patio" class="logo-img">
-            <h1 class="nombre-marca">Mercado El Patio</h1>
-        </div>
-
-        <nav class="menu-horizontal">
-            <button class="menu-hamburguesa" id="btn-menu">☰ Menú</button>
-            <ul id="lista-menu">
-                <li class="desplegable">
-                    <a href="#">Vinos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="#">Bodega Norton</a></li>
-                        <li><a href="#">Bodega Trapiche</a></li>
-                        <li><a href="#">Catena Zapata</a></li>
-                        <li><a href="#">Familia Zuccardi</a></li>
-                        <li><a href="#">Luigi Bosca</a></li>
-                        <li><a href="#">Rutini Wines</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Para el Asador ▾</a>
-                    <ul class="submenu">
-                        <li><a href="#">Cuchillería</a></li>
-                        <li><a href="#">Tablas Artesanales</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Artesanías ▾</a>
-                    <ul class="submenu">
-                        <li><a href="#">Cerámica</a></li>
-                        <li><a href="#">Cestería en Mimbre</a></li>
-                        <li><a href="#">Tejidos</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Cultura del Mate ▾</a>
-                    <ul class="submenu">
-                        <li><a href="#">Bombillas</a></li>
-                        <li><a href="#">Mates de Calabaza</a></li>
-                        <li><a href="#">Mates de Madera</a></li>
-                    </ul>
-                </li>
-                <li class="desplegable">
-                    <a href="#">Almacén ▾</a>
-                    <ul class="submenu">
-                        <li><a href="#">Aceites</a></li>
-                        <li><a href="#">Especias</a></li>
-                        <li><a href="#">Frutos Secos</a></li>
-                    </ul>
-                </li>
+        <li class="desplegable">
+            <a href="#">Nuestros Productos</a>
+            <ul class="submenu">
+                <li><a href="#" onclick="filtrarPorCodigo('1')">Vinos</a></li>
+                <li><a href="#" onclick="filtrarPorCodigo('2')">Para el Asador</a></li>
+                <li><a href="#" onclick="filtrarPorCodigo('3')">Artesanías</a></li>
+                <li><a href="#" onclick="filtrarPorCodigo('4')">Cultura del Mate</a></li>
+                <li><a href="#" onclick="filtrarPorCodigo('5')">Almacén</a></li>
             </ul>
-        </nav>
-
-        <div class="bloque-contacto">
-            <a href="https://api.whatsapp.com/send?phone=5492634378544&text=Hola!%20Visité%20tu%20tienda%20Mercado%20El%20Patio%20y%20me%20gustaría%20hacer%20una%20consulta." 
-               target="_blank" class="link-whatsapp">
-                📞 +54 9 263 4378544
-            </a>
-            <a href="mailto:tuemail@ejemplo.com?subject=Consulta" class="btn-mensaje">
-                ✉ Enviar Mensaje
-            </a>
-            <div class="carrito-flotante" onclick="alternarModalCarrito()">
-                🛒 <span id="contador-carrito">0</span>
-            </div>
-        </div>
-
-    </div>
-</header>
-
-<section class="banner-bienvenida">
-    <div class="filtro-oscuro">
-        <div class="texto-banner">
-            <h2>Tradición y Sabor de Campo</h2>
-            <p>Bienvenidos a Mercado El Patio. Seleccionamos minuciosamente los mejores vinos de bodega, aceites de oliva premium, frutos secos, especias y artesanías hechas a mano por productores locales.</p>
-            <a href="#catalogo" class="btn-ir">Ver Catálogo</a>
-        </div>
-    </div>
-</section>
-
-<main class="seccion-productos" id="catalogo">
-    <h2 class="titulo-productos">Nuestros Destacados</h2>
-    <div class="rejilla-productos" id="contenedor-productos-dinamicos">
-        <p style="text-align: center; color: #777; width: 100%;">Sincronizando catálogo con Mercado El Patio...</p>
-    </div>
-</main>
-
-<div class="modal-compra" id="modal-carrito">
-    <div class="caja-carrito">
-        <span class="close-btn" onclick="alternarModalCarrito()">&times;</span>
-        <h3>Tu Pedido</h3>
-        <div id="items-carrito">
-            <p style="color:#777; text-align:center; padding:15px;">El carrito está vacío.</p>
-        </div>
-        <div class="subtotal-caja">
-            <strong>Total:</strong> <span id="precio-total">$0</span>
-        </div>
-        <button class="whatsapp-enviar" onclick="enviarPedidoWhatsApp()">Confirmar Pedido por WhatsApp 💬</button>
-    </div>
-</div>
-
-<footer class="pie-pagina">
-    <a href="https://docs.google.com/spreadsheets/d/19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo/edit?gid=0#gid=0" target="_blank" class="link-admin-frase">
-        &copy; 2026 Mercado El Patio - Todos los derechos reservados.
-    </a>
-</footer>
-
-<script src="script.js"></script>
-</body>
-</html>
+        </li>
+    </ul>
+</nav>
