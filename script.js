@@ -3,8 +3,8 @@
 // ==========================================================================
 const CARGAR_DESDE_SHEET = true; 
 const ID_MI_HOJA = "19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo"; 
-const NOMBRE_PESTANA = "Productos"; 
-const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(NOMBRE_PESTANA)}`;
+// Cambiamos a la ruta oficial de exportación de Google (más estable y rápida)
+const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/export?format=csv&gid=0`;
 
 // ==========================================================================
 // 1. CONTROL DE INTERACTIVIDAD PARA MÓVILES (BOTÓN HAMBURGUESA)
@@ -39,7 +39,6 @@ function renderizarCatalogo(productos) {
             const textoBoton = item.disponible ? "Agregar" : "Sin Stock";
             const atributoDeshabilitado = item.disponible ? "" : "disabled";
 
-            // Buscamos el índice absoluto real dentro del listado original para no duplicar en el carrito
             const indiceAbsoluto = listadoProductos.indexOf(item);
 
             contenedor.innerHTML += `
@@ -64,43 +63,67 @@ function renderizarCatalogo(productos) {
 }
 
 // ==========================================================================
-// 3. CONEXIÓN PRO BIENESTAR CON GOOGLE SHEETS (PARSER ULTRA SEGURO)
+// 3. CONEXIÓN CON GOOGLE SHEETS (LECTOR BLINDADO MULTI-FORMATO)
 // ==========================================================================
 async function cargarDatosDesdeGoogle() {
     try {
         const respuesta = await fetch(URL_GOOGLE_SHEET_CSV);
-        if (!respuesta.ok) throw new Error("Error en la respuesta del servidor de Google");
+        if (!respuesta.ok) throw new Error("Error de permisos en el enlace de Google.");
         
         const datosTexto = await respuesta.text();
-        const filas = datosTexto.split('\n').slice(1); 
+        const filas = datosTexto.split('\n'); 
         
-        listadoProductos = filas.map(linea => {
-            if (!linea.trim()) return null; // Ignora líneas vacías de estructura
+        // Detecta automáticamente si tu Google Sheet exportó con comas o puntos y comas
+        const separador = filas[0].includes(';') ? ';' : ',';
+        
+        // Quitamos el encabezado y procesamos los datos
+        listadoProductos = filas.slice(1).map(linea => {
+            if (!linea.trim()) return null; 
             
-            // Separador por comas respetando bloques entrecomillados largos
-            const columnas = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col ? col.replace(/^"|"$/g, '').trim() : "");
+            let columnas = [];
+            let valor = "";
+            let comillas = false;
             
-            // Control experto: Validamos que al menos exista la columna del Nombre (Índice 1)
-            if(columnas.length > 1 && columnas[1] !== "") {
-                const rawDisponible = columnas[4] ? columnas[4].replace(/["']/g, '').trim().toLowerCase() : "si";
+            // Lógica experta para cortar celdas sin romper textos descriptivos
+            for (let i = 0; i < linea.length; i++) {
+                let char = linea[i];
+                if (char === '"') {
+                    comillas = !comillas;
+                } else if (char === separador && !comillas) {
+                    columnas.push(valor.trim());
+                    valor = "";
+                } else {
+                    valor += char;
+                }
+            }
+            columnas.push(valor.trim());
+            
+            // Verificamos que tenga al menos el nombre y el código
+            if(columnas.length >= 2 && columnas[1] !== "") {
+                const rawDisponible = columnas[4] ? columnas[4].toLowerCase() : "si";
                 
                 return {
-                    codigo: columnas[0] || "",                               // Columna A (1)
-                    nombre: columnas[1] || "",                               // Columna B (2)
-                    descripcion: columnas[2] || "",                          // Columna C (3)
-                    precio: parseFloat(columnas[3]) || 0,                    // Columna D (4)
-                    disponible: (rawDisponible === 'si' || rawDisponible === 'sí'), // Columna E (5)
-                    imagen: columnas[5] || ""                                // Columna F (6)
+                    codigo: columnas[0] || "",
+                    nombre: columnas[1] || "",
+                    descripcion: columnas[2] || "",
+                    precio: parseFloat(columnas[3] ? columnas[3].replace(',', '.') : 0) || 0,
+                    disponible: (rawDisponible.includes('si') || rawDisponible.includes('sí')),
+                    imagen: columnas[5] || ""
                 };
             }
             return null;
         }).filter(p => p !== null);
 
         renderizarCatalogo(listadoProductos);
+        
     } catch (error) {
         console.error("Error conectando a Google Sheets: ", error);
         document.getElementById('contenedor-productos-dinamicos').innerHTML = 
-            '<p style="text-align: center; color: red; width: 100%; margin: 40px 0;">Error al sincronizar el catálogo vivo. Por favor, verifique el formato de su Google Sheet.</p>';
+            `<div style="text-align: center; color: #dc3545; width: 100%; margin: 40px 0; padding: 20px; border: 1px solid #f5c6cb; border-radius: 8px; background: #f8d7da;">
+                <b>No se pudo cargar el catálogo.</b><br><br>
+                Asegurate de ir a tu Google Sheet, hacer clic en <b>Archivo > Compartir > Publicar en la web</b> y verificar que esté publicado.<br><br>
+                <small style="color: #721c24;">Detalle técnico para soporte: ${error.message}</small>
+            </div>`;
     }
 }
 
@@ -184,7 +207,7 @@ function enviarPedidoWhatsApp() {
 }
 
 // ==========================================================================
-// 6. MOTOR DE FILTRADO INDEXADO POR CÓDIGO DE CATEGORÍA
+// 6. MOTOR DE FILTRADO INDEXADO POR CÓDIGO
 // ==========================================================================
 function filtrarPorCodigo(codigoCategoria) {
     if (codigoCategoria === 'todos') {
