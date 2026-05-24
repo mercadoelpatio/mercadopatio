@@ -183,22 +183,23 @@ body {
     line-height: 16px;
 }
 
-/* ESTE ES EL NUEVO BLOQUE CON TU IMAGEN */
+/* ==========================================
+   ESTILOS DE LAS DEMÁS SECCIONES (BANNER Y PRODUCTOS)
+   ========================================== */
 .banner-bienvenida {
-    background-image: url('Patio1.jpg'); /* Conecta directamente con tu foto local */
+    background-image: url('Patio1.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center center; /* Mantiene la foto centrada */
     width: 100%;
-    min-height: 260px;
 }
 
 .filtro-oscuro {
     background-color: rgba(0,0,0,0.55);
-    padding: 90px 20px;
+    /* AUMENTAMOS LA ALTURA ACÁ (Antes era 80px, ahora es 160px) */
+    padding: 160px 20px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 320px;
 }
 
 .texto-banner {
