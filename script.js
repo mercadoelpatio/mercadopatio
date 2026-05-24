@@ -36,7 +36,7 @@ function renderizarCatalogo(productos) {
 
         contenedor.innerHTML = ""; 
         
-        productos.forEach(item => {
+        productos.forEach((item, index) => {
             const claseSinStock = item.disponible ? "" : "sin-stock";
             const textoBoton = item.disponible ? "Agregar" : "Sin Stock";
             const atributoDeshabilitado = item.disponible ? "" : "disabled";
@@ -51,7 +51,7 @@ function renderizarCatalogo(productos) {
                         <p>${item.descripcion}</p>
                         <div class="compra-box">
                             <span class="costo">$${item.precio.toLocaleString('es-AR')}</span>
-                            <button class="add-cart" ${atributoDeshabilitado} onclick="agregarAlCarrito('${item.nombre.replace(/'/g, "\\'")}', ${item.precio})">
+                            <button class="add-cart" ${atributoDeshabilitado} onclick="presionarAgregar(${index})">
                                 ${textoBoton}
                             </button>
                         </div>
@@ -102,18 +102,23 @@ async function cargarDatosDesdeGoogle() {
 }
 
 // ==========================================
-// 4. FUNCIONALIDAD DEL CARRITO DE COMPRAS (CON MODERACIÓN)
+// 4. FUNCIONALIDAD DEL CARRITO DE COMPRAS
 // ==========================================
 let carrito = [];
 
-function agregarAlCarrito(nombre, precio) {
-    carrito.push({ nombre: nombre, precio: precio });
-    actualizarInterfazCarrito();
+function presionarAgregar(indiceCatalogo) {
+    const productoSeleccionado = listadoProductos[indiceCatalogo];
+    if (productoSeleccionado) {
+        carrito.push({ 
+            nombre: productoSeleccionado.nombre, 
+            precio: productoSeleccionado.precio 
+        });
+        actualizarInterfazCarrito();
+    }
 }
 
-// FUNCIÓN CORREGIDA: Remueve el producto exacto por su posición en la lista
-function eliminarDelCarrito(indice) {
-    carrito.splice(indice, 1); 
+function eliminarDelCarrito(indiceCarrito) {
+    carrito.splice(indiceCarrito, 1); 
     actualizarInterfazCarrito(); 
 }
 
@@ -134,15 +139,12 @@ function actualizarInterfazCarrito() {
         contenedorItems.innerHTML = "";
         let total = 0;
         
-        // Mapeamos cada artículo con su índice numérico para poder borrarlo
         carrito.forEach((item, index) => {
             total += item.precio;
             contenedorItems.innerHTML += `
-                <div class="item-pedido" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <button onclick="eliminarDelCarrito(${index})" style="background: none; border: none; color: #dc3545; font-size: 16px; cursor: pointer; padding: 0 5px; font-weight: bold;" title="Eliminar producto">
-                            ✕
-                        </button>
+                <div class="item-pedido">
+                    <div class="info-izquierda-carrito">
+                        <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${index})" title="Eliminar producto">✕</button>
                         <span>${item.nombre}</span>
                     </div>
                     <strong>$${item.precio.toLocaleString('es-AR')}</strong>
