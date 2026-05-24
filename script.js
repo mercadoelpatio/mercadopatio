@@ -8,7 +8,9 @@ const ID_MI_HOJA = "19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo";
 const NOMBRE_PESTANA = "Productos"; 
 const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(NOMBRE_PESTANA)}`;
 
+// ==========================================
 // 1. CONTROL DE INTERACTIVIDAD PARA MÓVILES (BOTÓN HAMBURGUESA)
+// ==========================================
 const btnMenu = document.getElementById('btn-menu');
 const listaMenu = document.getElementById('lista-menu');
 
@@ -20,7 +22,9 @@ if (btnMenu && listaMenu) {
 
 let listadoProductos = [];
 
+// ==========================================
 // 2. FUNCIÓN PARA DIBUJAR LAS TARJETAS EN EL HTML
+// ==========================================
 function renderizarCatalogo(productos) {
     const contenedor = document.getElementById('contenedor-productos-dinamicos');
     
@@ -58,7 +62,9 @@ function renderizarCatalogo(productos) {
     }
 }
 
-// 3. CONEXIÓN CORREGIDA Y OPTIMIZADA CON GOOGLE SHEETS
+// ==========================================
+// 3. CONEXIÓN CON GOOGLE SHEETS
+// ==========================================
 async function cargarDatosDesdeGoogle() {
     try {
         const respuesta = await fetch(URL_GOOGLE_SHEET_CSV);
@@ -68,16 +74,12 @@ async function cargarDatosDesdeGoogle() {
         }
         
         const datosTexto = await respuesta.text();
-        
-        // Separamos las líneas del archivo Excel
         const filas = datosTexto.split('\n').slice(1); 
         
         listadoProductos = filas.map(linea => {
-            // Dividimos por comas respetando los textos largos con comillas
             const columnas = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
             
             if(columnas.length >= 5 && columnas[0] !== "") {
-                // Limpieza absoluta del texto "SI" para evitar bloqueos por mayúsculas/minúsculas
                 const estadoDisponible = columnas[3].replace(/["']/g, '').trim().toLowerCase();
                 
                 return {
@@ -99,12 +101,20 @@ async function cargarDatosDesdeGoogle() {
     }
 }
 
-// 4. FUNCIONALIDAD DEL CARRITO DE COMPRAS
+// ==========================================
+// 4. FUNCIONALIDAD DEL CARRITO DE COMPRAS (CON MODERACIÓN)
+// ==========================================
 let carrito = [];
 
 function agregarAlCarrito(nombre, precio) {
     carrito.push({ nombre: nombre, precio: precio });
     actualizarInterfazCarrito();
+}
+
+// FUNCIÓN CORREGIDA: Remueve el producto exacto por su posición en la lista
+function eliminarDelCarrito(indice) {
+    carrito.splice(indice, 1); 
+    actualizarInterfazCarrito(); 
 }
 
 function actualizarInterfazCarrito() {
@@ -123,11 +133,18 @@ function actualizarInterfazCarrito() {
     if (contenedorItems) {
         contenedorItems.innerHTML = "";
         let total = 0;
-        carrito.forEach(item => {
+        
+        // Mapeamos cada artículo con su índice numérico para poder borrarlo
+        carrito.forEach((item, index) => {
             total += item.precio;
             contenedorItems.innerHTML += `
-                <div class="item-pedido">
-                    <span>${item.nombre}</span>
+                <div class="item-pedido" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button onclick="eliminarDelCarrito(${index})" style="background: none; border: none; color: #dc3545; font-size: 16px; cursor: pointer; padding: 0 5px; font-weight: bold;" title="Eliminar producto">
+                            ✕
+                        </button>
+                        <span>${item.nombre}</span>
+                    </div>
                     <strong>$${item.precio.toLocaleString('es-AR')}</strong>
                 </div>
             `;
@@ -143,7 +160,9 @@ function alternarModalCarrito() {
     }
 }
 
-// 5. ENVÍO DE PEDIDO CONFIGURADO PARA TU WHATSAPP
+// ==========================================
+// 5. ENVÍO DE PEDIDO CONFIGURADO PARA WHATSAPP
+// ==========================================
 function enviarPedidoWhatsApp() {
     if (carrito.length === 0) return;
     
