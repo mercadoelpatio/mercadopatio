@@ -12,7 +12,7 @@ body {
 }
 
 /* ==========================================
-   ESTILOS DE LA CABECERA COMPACTA HORIZONTAL (CONSERVADO ORIGINAL)
+   ESTILOS DE LA CABECERA COMPACTA HORIZONTAL 
    ========================================== */
 .cabecera-principal {
     background-color: #ffffff;
@@ -21,14 +21,14 @@ body {
     top: 0;
     z-index: 1000;
     width: 100%;
-    border-bottom: 3px solid #bc5a26; /* Detalle terracota de tu logo */
+    border-bottom: 3px solid #bc5a26; 
 }
 
 .contenedor-navegacion {
     max-width: 1350px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; /* Fuerza la separación horizontal */
+    justify-content: space-between; 
     align-items: center;
     padding: 10px 20px;
 }
@@ -41,14 +41,14 @@ body {
 }
 
 .logo-img {
-    height: 85px; /* Tu tamaño grande solicitado */
+    height: 85px; 
     width: auto;
     border-radius: 4px;
 }
 
 .nombre-marca {
     font-family: 'Georgia', serif;
-    font-size: 32px; /* Tipografía más grande */
+    font-size: 32px; 
     font-weight: bold;
     color: #bc5a26;
     white-space: nowrap;
@@ -62,7 +62,7 @@ body {
 
 .menu-horizontal > ul {
     list-style: none;
-    display: flex; /* Alinea los menús de forma horizontal */
+    display: flex; 
     gap: 5px;
 }
 
@@ -243,16 +243,17 @@ body {
     flex-direction: column;
 }
 
-/* 🛠️ MEJORA EXCLUSIVA AÑADIDA: Ajuste simétrico para que tus fotos se vean perfectas */
+/* 🛠️ MODIFICACIÓN: Imágenes más chicas, centradas y completamente estilizadas */
 .img-box { 
     width: 100%; 
-    height: 250px;         /* Forzamos altura idéntica para que las tarjetas queden alineadas */
+    height: 160px;          /* Bajamos la altura a 160px para que las fotos sean más sutiles */
     display: flex;
-    align-items: center;    /* Centra verticalmente las botellas cortas o altas */
-    justify-content: center;/* Centra horizontalmente */
+    align-items: center;    
+    justify-content: center;
     background-color: #ffffff;
-    padding: 15px;          /* Espacio alrededor para que las botellas no se corten */
+    padding: 10px;          /* Espacio controlado */
     overflow: hidden;
+    margin-top: 15px;       /* Despega la imagen del borde superior de la tarjeta */
 }
 
 .img-box img { 
@@ -260,24 +261,24 @@ body {
     max-height: 100%; 
     width: auto;
     height: auto;
-    object-fit: contain;    /* Muestra el producto entero en su proporción real sin deformarlo */
+    object-fit: contain;    /* Clave: Sigue viéndose la botella entera sin deformar */
     transition: transform 0.3s ease;
 }
 
 .tarjeta-item:hover .img-box img {
-    transform: scale(1.03); /* Leve efecto zoom interactivo de calidad */
+    transform: scale(1.05); 
 }
 
-.detalles-item { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
-.detalles-item h3 { font-size: 17px; margin-bottom: 10px; }
-.detalles-item p { font-size: 14px; color: #666; margin-bottom: 15px; flex-grow: 1; }
+.detalles-item { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+.detalles-item h3 { font-size: 16px; margin-bottom: 8px; text-align: center; } /* Centramos el título del vino */
+.detalles-item p { font-size: 13px; color: #666; margin-bottom: 15px; flex-grow: 1; text-align: center; }
 
-.compra-box { display: flex; justify-content: space-between; align-items: center; }
+.compra-box { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
 .costo { font-size: 18px; font-weight: bold; color: #bc5a26; }
 .add-cart { background: #222; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 3px; font-weight: bold; }
 .add-cart:hover { background: #bc5a26; }
 
-/* CONTROL DE STOCK (Atenuación visual si el producto no está disponible) */
+/* CONTROL DE STOCK */
 .tarjeta-item.sin-stock {
     opacity: 0.55;
 }
@@ -311,7 +312,7 @@ body {
 }
 
 .link-admin-frase {
-    color: #888888; /* Color gris común */
+    color: #888888; 
     text-decoration: none;
     font-size: 14px;
     cursor: default;
@@ -324,9 +325,7 @@ body {
 /* BOTÓN RESPONSIVO MÓVIL */
 .menu-hamburguesa { display: none; }
 
-/* ==========================================
-   ADAPTACIÓN EXCLUSIVA PARA CELULARES
-   ========================================== */
+/* ADAPTACIÓN EXCLUSIVA PARA CELULARES */
 @media (max-width: 1024px) {
     .contenedor-navegacion { flex-direction: column; gap: 15px; text-align: center; }
     .menu-horizontal { margin-left: 0; width: 100%; }
