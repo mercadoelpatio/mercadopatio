@@ -12,7 +12,7 @@ body {
 }
 
 /* ==========================================
-   ESTILOS DE LA CABECERA COMPACTA HORIZONTAL (CORREGIDO)
+   ESTILOS DE LA CABECERA COMPACTA HORIZONTAL (CONSERVADO ORIGINAL)
    ========================================== */
 .cabecera-principal {
     background-color: #ffffff;
@@ -243,8 +243,30 @@ body {
     flex-direction: column;
 }
 
-.img-box { width: 100%; height: 200px; }
-.img-box img { width: 100%; height: 100%; object-fit: cover; }
+/* 🛠️ MEJORA EXCLUSIVA AÑADIDA: Ajuste simétrico para que tus fotos se vean perfectas */
+.img-box { 
+    width: 100%; 
+    height: 250px;         /* Forzamos altura idéntica para que las tarjetas queden alineadas */
+    display: flex;
+    align-items: center;    /* Centra verticalmente las botellas cortas o altas */
+    justify-content: center;/* Centra horizontalmente */
+    background-color: #ffffff;
+    padding: 15px;          /* Espacio alrededor para que las botellas no se corten */
+    overflow: hidden;
+}
+
+.img-box img { 
+    max-width: 100%; 
+    max-height: 100%; 
+    width: auto;
+    height: auto;
+    object-fit: contain;    /* Muestra el producto entero en su proporción real sin deformarlo */
+    transition: transform 0.3s ease;
+}
+
+.tarjeta-item:hover .img-box img {
+    transform: scale(1.03); /* Leve efecto zoom interactivo de calidad */
+}
 
 .detalles-item { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
 .detalles-item h3 { font-size: 17px; margin-bottom: 10px; }
@@ -254,6 +276,16 @@ body {
 .costo { font-size: 18px; font-weight: bold; color: #bc5a26; }
 .add-cart { background: #222; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 3px; font-weight: bold; }
 .add-cart:hover { background: #bc5a26; }
+
+/* CONTROL DE STOCK (Atenuación visual si el producto no está disponible) */
+.tarjeta-item.sin-stock {
+    opacity: 0.55;
+}
+.tarjeta-item.sin-stock .add-cart {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+}
 
 /* MODAL CARRITO */
 .modal-compra {
