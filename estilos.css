@@ -183,15 +183,13 @@ body {
     line-height: 16px;
 }
 
-/* ==========================================
-   BANNER DE BIENVENIDA
-   ========================================== */
+/* ESTE ES EL NUEVO BLOQUE CON TU IMAGEN */
 .banner-bienvenida {
-    background-image: url('https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=1600&auto=format&fit=crop');
+    background-image: url('Patio1.jpg'); /* Conecta directamente con tu foto local */
     background-size: cover;
     background-position: center;
     width: 100%;
-    min-height: 320px;
+    min-height: 260px;
 }
 
 .filtro-oscuro {
