@@ -3,7 +3,7 @@
 // ==========================================
 const CARGAR_DESDE_SHEET = true; 
 
-// ¡Tu ID real ya está colocado aquí adentro!
+// ID real de tu Google Sheet (Verificado)
 const ID_MI_HOJA = "19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo"; 
 const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv`;
 
@@ -25,7 +25,7 @@ function renderizarCatalogo(productos) {
     
     if (contenedor) {
         if (productos.length === 0) {
-            contenedor.innerHTML = '<p style="text-align: center; color: #777; width: 100%;">No hay productos cargados en este momento.</p>';
+            contenedor.innerHTML = '<p style="text-align: center; color: #777; width: 100%;">No hay productos disponibles en el catálogo en este momento.</p>';
             return;
         }
 
@@ -57,34 +57,39 @@ function renderizarCatalogo(productos) {
     }
 }
 
-// 3. CONEXIÓN ASÍNCRONA CON TU GOOGLE SHEET
+// 3. CONEXIÓN CORREGIDA CON GOOGLE SHEETS
 async function cargarDatosDesdeGoogle() {
     try {
         const respuesta = await fetch(URL_GOOGLE_SHEET_CSV);
         const datosTexto = await respuesta.text();
         
+        // Separamos las líneas del archivo Excel
         const filas = datosTexto.split('\n').slice(1); 
         
         listadoProductos = filas.map(linea => {
+            // Dividimos por comas respetando los textos largos con comillas
             const columnas = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
             
-            if(columnas.length >= 5) {
+            if(columnas.length >= 5 && columnas[0] !== "") {
+                // CORRECCIÓN TÉCNICA: Limpieza absoluta del texto "SI" para evitar bloqueos
+                const estadoDisponible = columnas[3].replace(/["']/g, '').trim().toLowerCase();
+                
                 return {
                     nombre: columnas[0],
                     descripcion: columnas[1],
                     precio: parseFloat(columnas[2]) || 0,
-                    disponible: columnas[3].toLowerCase() === 'si',
+                    disponible: (estadoDisponible === 'si'), // Acepta cualquier variante de "si"
                     imagen: columnas[4]
                 };
             }
             return null;
-        }).filter(p => p !== null && p.nombre !== "");
+        }).filter(p => p !== null);
 
         renderizarCatalogo(listadoProductos);
     } catch (error) {
         console.error("Error conectando a Google Sheets: ", error);
         document.getElementById('contenedor-productos-dinamicos').innerHTML = 
-            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el stock. Por favor, verifique la configuración.</p>';
+            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el stock. Por favor, verifique la configuración de Google Sheets.</p>';
     }
 }
 
