@@ -228,7 +228,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* 🛠️ MODIFICACIÓN: Ajuste de ancho mínimo a 230px para empaquetar 3 productos por fila */
+/* Ajuste de ancho mínimo a 230px para empaquetar 3 productos por fila */
 .rejilla-productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -273,10 +273,41 @@ body {
 .detalles-item h3 { font-size: 16px; margin-bottom: 8px; text-align: center; } 
 .detalles-item p { font-size: 13px; color: #666; margin-bottom: 15px; flex-grow: 1; text-align: center; }
 
-.compra-box { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-.costo { font-size: 18px; font-weight: bold; color: #bc5a26; }
-.add-cart { background: #222; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 3px; font-weight: bold; }
-.add-cart:hover { background: #bc5a26; }
+/* =========================================================
+   ESTILO ACTUALIZADO: PRECIO CENTRADO Y BOTÓN AMPLIO
+   ========================================================= */
+.compra-box { 
+    display: flex; 
+    flex-direction: column; /* Apila el precio arriba y el botón abajo */
+    align-items: center;    /* Centra ambos elementos */
+    gap: 12px;              /* Espacio pequeño y prolijo entre el precio y el botón */
+    margin-top: auto; 
+}
+
+.costo { 
+    font-size: 20px; 
+    font-weight: bold; 
+    color: #bc5a26; 
+    text-align: center;
+}
+
+.add-cart { 
+    background: #222; 
+    color: white; 
+    border: none; 
+    padding: 10px 16px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    width: 100%;            /* Hace que el botón ocupe todo el ancho de la tarjeta */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease;
+}
+
+.add-cart:hover { 
+    background: #bc5a26; 
+}
 
 /* CONTROL DE STOCK */
 .tarjeta-item.sin-stock {
