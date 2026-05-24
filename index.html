@@ -12,30 +12,31 @@
         <div class="contenedor-navegacion">
             
             <div class="bloque-marca">
-                <img src="https://placehold.co/85x85?text=Logo" alt="Logo Mercado El Patio" class="logo-img">
+                <img src="Logo.jfif" alt="Logo Mercado El Patio" class="logo-img"
+                     onerror="this.onerror=null; this.src='https://placehold.co/85x85/bc5a26/white?text=EP';">
                 <h1 class="nombre-marca">Mercado El Patio</h1>
             </div>
 
             <nav class="menu-horizontal">
                 <button class="menu-hamburguesa" id="btn-menu">☰ Menú</button>
                 <ul id="lista-menu">
-                    <li><a href="#" onclick="filtrarPorCodigo('todos')">Inicio / Todo</a></li>
+                    <li><a href="#" onclick="filtrarPorCodigo('todos'); return false;">Inicio / Todo</a></li>
                     
                     <li class="desplegable">
-                        <a href="#">Nuestros Productos</a>
+                        <a href="#">Nuestros Productos ▾</a>
                         <ul class="submenu">
-                            <li><a href="#" onclick="filtrarPorCodigo('1')">Vinos</a></li>
-                            <li><a href="#" onclick="filtrarPorCodigo('2')">Para el Asador</a></li>
-                            <li><a href="#" onclick="filtrarPorCodigo('3')">Artesanías</a></li>
-                            <li><a href="#" onclick="filtrarPorCodigo('4')">Cultura del Mate</a></li>
-                            <li><a href="#" onclick="filtrarPorCodigo('5')">Almacén</a></li>
+                            <li><a href="#" onclick="filtrarPorCodigo('1'); return false;">Vinos</a></li>
+                            <li><a href="#" onclick="filtrarPorCodigo('2'); return false;">Para el Asador</a></li>
+                            <li><a href="#" onclick="filtrarPorCodigo('3'); return false;">Artesanías</a></li>
+                            <li><a href="#" onclick="filtrarPorCodigo('4'); return false;">Cultura del Mate</a></li>
+                            <li><a href="#" onclick="filtrarPorCodigo('5'); return false;">Almacén</a></li>
                         </ul>
                     </li>
                 </ul>
             </nav>
 
             <div class="bloque-contacto">
-                <a href="https://wa.me/5492634378544" target="_blank" class="link-whatsapp">Contacto</a>
+                <a href="https://wa.me/5492634378544" target="_blank" class="link-whatsapp">📞 Contacto</a>
                 <div class="carrito-flotante" onclick="alternarModalCarrito()">
                     🛒 <span id="contador-carrito">0</span>
                 </div>
@@ -49,37 +50,40 @@
             <div class="texto-banner">
                 <h2>Bienvenidos a Mercado El Patio</h2>
                 <p>Tradición y calidad en cada producto que elegimos para vos.</p>
+                <a href="#catalogo" class="btn-ir">Ver Catálogo</a>
             </div>
         </div>
     </section>
 
-    <main class="seccion-productos">
+    <main class="seccion-productos" id="catalogo">
         <h2 class="titulo-productos">Nuestro Catálogo</h2>
         
         <div id="contenedor-productos-dinamicos" class="rejilla-productos">
-            <p style="text-align:center; width:100%; color: #888;">Cargando productos en vivo...</p>
+            <p style="text-align:center; width:100%; color: #888; padding: 40px 0;">Cargando productos en vivo...</p>
         </div>
     </main>
 
+    <!-- MODAL CARRITO -->
     <div id="modal-carrito" class="modal-compra">
         <div class="caja-carrito">
             <span class="close-btn" onclick="alternarModalCarrito()">×</span>
             <h2 style="margin-bottom: 20px; font-family: Georgia, serif; color: #4A3B32;">Tu Pedido</h2>
             
-            <div id="items-carrito">
-                </div>
+            <div id="items-carrito"></div>
             
             <div class="subtotal-caja">
                 <span>Total estimado:</span>
                 <strong id="precio-total">$0</strong>
             </div>
             
-            <button class="whatsapp-enviar" onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
+            <button class="whatsapp-enviar" onclick="enviarPedidoWhatsApp()">
+                📱 Enviar pedido por WhatsApp
+            </button>
         </div>
     </div>
 
     <footer class="pie-pagina">
-        <p style="color: #ccc; font-size: 14px; margin-bottom: 10px;">© 2024 Mercado El Patio. Todos los derechos reservados.</p>
+        <p style="color: #ccc; font-size: 14px; margin-bottom: 10px;">© 2025 Mercado El Patio. Todos los derechos reservados.</p>
         <span class="link-admin-frase">Gestión Interna</span>
     </footer>
 
