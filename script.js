@@ -3,7 +3,7 @@
 // ==========================================
 const CARGAR_DESDE_SHEET = true; 
 
-// ID y nombre de pestaña corregidos específicamente para tu Mercado El Patio
+// ID y nombre de pestaña de tu Mercado El Patio
 const ID_MI_HOJA = "19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo"; 
 const NOMBRE_PESTANA = "Productos"; 
 const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(NOMBRE_PESTANA)}`;
@@ -30,16 +30,19 @@ function renderizarCatalogo(productos) {
     
     if (contenedor) {
         if (productos.length === 0) {
-            contenedor.innerHTML = '<p style="text-align: center; color: #777; width: 100%;">No hay productos disponibles en el catálogo en este momento.</p>';
+            contenedor.innerHTML = '<p style="text-align: center; color: #777; width: 100%; margin: 40px 0;">No hay productos disponibles en esta categoría en este momento.</p>';
             return;
         }
 
         contenedor.innerHTML = ""; 
         
-        productos.forEach((item, index) => {
+        productos.forEach((item) => {
             const claseSinStock = item.disponible ? "" : "sin-stock";
             const textoBoton = item.disponible ? "Agregar" : "Sin Stock";
             const atributoDeshabilitado = item.disponible ? "" : "disabled";
+
+            // Buscamos el índice real y absoluto dentro del listado original para el carrito
+            const indiceAbsoluto = listadoProductos.indexOf(item);
 
             contenedor.innerHTML += `
                 <div class="tarjeta-item ${claseSinStock}">
@@ -51,7 +54,7 @@ function renderizarCatalogo(productos) {
                         <p>${item.descripcion}</p>
                         <div class="compra-box">
                             <span class="costo">$${item.precio.toLocaleString('es-AR')}</span>
-                            <button class="add-cart" ${atributoDeshabilitado} onclick="presionarAgregar(${index})">
+                            <button class="add-cart" ${atributoDeshabilitado} onclick="presionarAgregar(${indiceAbsoluto})">
                                 ${textoBoton}
                             </button>
                         </div>
@@ -63,7 +66,7 @@ function renderizarCatalogo(productos) {
 }
 
 // ==========================================
-// 3. CONEXIÓN CON GOOGLE SHEETS
+// 3. CONEXIÓN CON GOOGLE SHEETS (NUEVA MATRIZ DE 6 COLUMNAS)
 // ==========================================
 async function cargarDatosDesdeGoogle() {
     try {
@@ -79,15 +82,17 @@ async function cargarDatosDesdeGoogle() {
         listadoProductos = filas.map(linea => {
             const columnas = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
             
-            if(columnas.length >= 5 && columnas[0] !== "") {
-                const estadoDisponible = columnas[3].replace(/["']/g, '').trim().toLowerCase();
+            // Verificación estricta de las 6 columnas solicitadas
+            if(columnas.length >= 6 && columnas[1] !== "") {
+                const estadoDisponible = columnas[4].replace(/["']/g, '').trim().toLowerCase();
                 
                 return {
-                    nombre: columnas[0],
-                    descripcion: columnas[1],
-                    precio: parseFloat(columnas[2]) || 0,
-                    disponible: (estadoDisponible === 'si'), 
-                    imagen: columnas[4]
+                    codigo: columnas[0],       // Columna A (1)
+                    nombre: columnas[1],       // Columna B (2)
+                    descripcion: columnas[2],  // Columna C (3)
+                    precio: parseFloat(columnas[3]) || 0, // Columna D (4)
+                    disponible: (estadoDisponible === 'si'), // Columna E (5)
+                    imagen: columnas[5]        // Columna F (6)
                 };
             }
             return null;
@@ -97,7 +102,7 @@ async function cargarDatosDesdeGoogle() {
     } catch (error) {
         console.error("Error conectando a Google Sheets: ", error);
         document.getElementById('contenedor-productos-dinamicos').innerHTML = 
-            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el stock. Por favor, verifique los permisos de Compartir en Google Sheets.</p>';
+            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el catálogo. Por favor, verifique los permisos de Compartir en Google Sheets.</p>';
     }
 }
 
@@ -178,6 +183,29 @@ function enviarPedidoWhatsApp() {
     });
     mensaje += `\n*Total pedido: $${total.toLocaleString('es-AR')}*`;
     window.open(`https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`, '_blank');
+}
+
+// ==========================================
+// 6. NUEVA FUNCIÓN: MOTOR DE FILTRADO INDEXADO POR CÓDIGO
+// ==========================================
+function filtrarPorCodigo(codigoCategoria) {
+    if (codigoCategoria === 'todos') {
+        renderizarCatalogo(listadoProductos);
+        return;
+    }
+
+    // Comparamos el código convirtiendo ambos a Texto para evitar incompatibilidades numéricas
+    const productosFiltrados = listadoProductos.filter(producto => {
+        return String(producto.codigo).trim() === String(codigoCategoria).trim();
+    });
+
+    renderizarCatalogo(productosFiltrados);
+
+    // Si está en pantalla móvil, colapsa el menú hamburguesa al presionar una opción
+    const listaMenu = document.getElementById('lista-menu');
+    if (listaMenu) {
+        listaMenu.classList.remove('mostrar');
+    }
 }
 
 window.onload = cargarDatosDesdeGoogle;
