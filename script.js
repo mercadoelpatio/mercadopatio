@@ -3,9 +3,10 @@
 // ==========================================
 const CARGAR_DESDE_SHEET = true; 
 
-// ID real de tu Google Sheet (Verificado)
+// ID y nombre de pestaña corregidos específicamente para tu Mercado El Patio
 const ID_MI_HOJA = "19X6Xr0LI0tWDmYph0Vzv2cmx9FWIsL7HXfjP-3JJTDo"; 
-const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv`;
+const NOMBRE_PESTANA = "Productos"; 
+const URL_GOOGLE_SHEET_CSV = `https://docs.google.com/spreadsheets/d/${ID_MI_HOJA}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(NOMBRE_PESTANA)}`;
 
 // 1. CONTROL DE INTERACTIVIDAD PARA MÓVILES (BOTÓN HAMBURGUESA)
 const btnMenu = document.getElementById('btn-menu');
@@ -57,10 +58,15 @@ function renderizarCatalogo(productos) {
     }
 }
 
-// 3. CONEXIÓN CORREGIDA CON GOOGLE SHEETS
+// 3. CONEXIÓN CORREGIDA Y OPTIMIZADA CON GOOGLE SHEETS
 async function cargarDatosDesdeGoogle() {
     try {
         const respuesta = await fetch(URL_GOOGLE_SHEET_CSV);
+        
+        if (!respuesta.ok) {
+            throw new Error("La respuesta del servidor de Google no fue correcta");
+        }
+        
         const datosTexto = await respuesta.text();
         
         // Separamos las líneas del archivo Excel
@@ -71,14 +77,14 @@ async function cargarDatosDesdeGoogle() {
             const columnas = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(col => col.replace(/^"|"$/g, '').trim());
             
             if(columnas.length >= 5 && columnas[0] !== "") {
-                // CORRECCIÓN TÉCNICA: Limpieza absoluta del texto "SI" para evitar bloqueos
+                // Limpieza absoluta del texto "SI" para evitar bloqueos por mayúsculas/minúsculas
                 const estadoDisponible = columnas[3].replace(/["']/g, '').trim().toLowerCase();
                 
                 return {
                     nombre: columnas[0],
                     descripcion: columnas[1],
                     precio: parseFloat(columnas[2]) || 0,
-                    disponible: (estadoDisponible === 'si'), // Acepta cualquier variante de "si"
+                    disponible: (estadoDisponible === 'si'), 
                     imagen: columnas[4]
                 };
             }
@@ -89,7 +95,7 @@ async function cargarDatosDesdeGoogle() {
     } catch (error) {
         console.error("Error conectando a Google Sheets: ", error);
         document.getElementById('contenedor-productos-dinamicos').innerHTML = 
-            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el stock. Por favor, verifique la configuración de Google Sheets.</p>';
+            '<p style="text-align: center; color: red; width: 100%;">Error al sincronizar el stock. Por favor, verifique los permisos de Compartir en Google Sheets.</p>';
     }
 }
 
@@ -137,6 +143,7 @@ function alternarModalCarrito() {
     }
 }
 
+// 5. ENVÍO DE PEDIDO CONFIGURADO PARA TU WHATSAPP
 function enviarPedidoWhatsApp() {
     if (carrito.length === 0) return;
     
